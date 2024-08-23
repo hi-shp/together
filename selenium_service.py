@@ -29,14 +29,8 @@ class WriteNoticeService:
         self.driver = webdriver.Chrome(service=driver_service, options=options)
         self.driver.get('https://plato.pusan.ac.kr/')
 
-    def write_notices(self, id: str, pw: str, course_name: str, announcements: List[Announcement]):
-        self.login(id, pw)
-        self.move_to_course(course_name)
-
-        for announcement in announcements:
-            if announcement.notice_board_name != "해당없음":
-                self.move_to_notice_board(announcement.notice_board_name)
-                self.write_notice_in_board(announcement.title, announcement.url, announcement.content_html, announcement.files)
+        # 로그인 수행
+        self.login(os.getenv('PLATO_ID'), os.getenv('PLATO_PW'))
 
     def login(self, id: str, pw: str):
         username_input = self.driver.find_element(By.ID, 'input-username')
@@ -48,14 +42,24 @@ class WriteNoticeService:
         submit = self.driver.find_element(By.NAME, "loginbutton")
         submit.click()
 
-    def move_to_course(self, course_name: str):
-        course_link = self.driver.find_element(By.XPATH, f'//h3[text()="{course_name}"]/ancestor::a')
-        course_link.click()
+    def move_to_course(self, course_url: str):
+        self.driver.get(course_url)
 
     def move_to_notice_board(self, notice_board_name: str):
         notice_board_link = self.driver.find_element(By.XPATH,
                                                      f'//a[span[contains(@class, "instancename") and contains(text(), "{notice_board_name}")]]')
         notice_board_link.click()
+
+    def write_notices(self, course_url: str, announcements: List[Announcement]):
+        self.move_to_course(course_url)
+
+        for announcement in announcements:
+            if announcement.notice_board_name != "해당없음":
+                self.move_to_notice_board(announcement.notice_board_name)
+                self.write_notice_in_board(announcement.title, announcement.url, announcement.content_html, announcement.files)
+
+                # 공지 작성 후 코스 페이지로 돌아가기
+                self.move_to_course(course_url)
 
     def write_notice_in_board(self, subject: str, url: str, content: str, files: List[str]):
         write_button = self.driver.find_element(By.XPATH, '//a[contains(text(), "쓰기")]')
@@ -95,7 +99,7 @@ class WriteNoticeService:
                     EC.presence_of_element_located((By.CSS_SELECTOR, 'input[type="file"]'))
                 )
             except:
-                # 파일 선택 요소를 찾지 못하면 저장 버튼 클릭 (업로드 대기)
+                # 파일 선택 요소를 찾지 못하면 저장 버튼 클릭 (업로드 시간 대기 용)
                 self.click_with_js('input[type="submit"].btn-primary')
         else:
             # 파일이 없으면 바로 저장 버튼 클릭
