@@ -41,4 +41,3 @@ class PageUrlManager:
                     number=number
                 )
             )
-
