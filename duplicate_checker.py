@@ -48,9 +48,9 @@ def is_recent_title_duplicate(new_title, filename='titles.txt'):
     # 날짜와 시간, $ 기호를 제거한 제목 리스트
     cleaned_titles = [remove_brackets(title).strip() for title in recent_titles]
 
-    # 원시적인 텍스트 유사도 검사 (80% 이상이면 중복으로 간주)
+    # 원시적인 텍스트 유사도 검사 (90% 이상이면 중복으로 간주)
     for title in cleaned_titles:
-        if calculate_similarity(new_title, title) >= 0.8:
+        if calculate_similarity(new_title, title) >= 0.9:
             return '중복'
 
     # GPT를 사용해 중복 여부 판단
