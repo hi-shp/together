@@ -19,7 +19,7 @@ def answer_gpt(user_content):
         "[Competition/Contest] Art/Design/Architecture =([공모전] 미술/디자인/건축)\n"
         "[Competition/Contest] Literature/Personal Narrative/Essay =([공모전] 문학/수기/에세이)\n"
         "[Competition/Contest] Miscellaneous (for contests not clearly falling into other categories or if uncertain) =([공모전] 기타)\n"
-        "Education/Lecture/Program or International assignment/Exchange student =(교육/특강/프로그램)\n"
+        "Kind of Education/Lecture/Program or International assignment/Exchange student =(교육/특강/프로그램)\n"
         "Scholarship/Scholar (only those awarded, including work-study students) =(장학금)\n"
         "Supporters/Ambassadors =(서포터즈)\n"
         "Volunteer Work =(봉사활동)\n"
