@@ -1,8 +1,13 @@
 import os
+import re
 from datetime import datetime, timedelta
 import tiktoken
 from gpt_client import check_title_similarity
 from difflib import SequenceMatcher
+
+def remove_brackets(text):
+    # 대괄호와 그 안의 내용을 제거
+    return re.sub(r'\[.*?\]', '', text).strip()
 
 def truncate_text(text, max_tokens):  # 토큰 수 이하로 자르기
     encoding = tiktoken.get_encoding("cl100k_base")
@@ -19,7 +24,10 @@ def truncate_text(text, max_tokens):  # 토큰 수 이하로 자르기
     return truncated_text
 
 def calculate_similarity(a, b):
-    return SequenceMatcher(None, a, b).ratio()
+    # 유사도 계산 전에 대괄호와 그 안의 내용을 제거
+    a_clean = remove_brackets(a)
+    b_clean = remove_brackets(b)
+    return SequenceMatcher(None, a_clean, b_clean).ratio()
 
 def is_recent_title_duplicate(new_title, filename='titles.txt'):
     recent_titles = []
@@ -32,13 +40,13 @@ def is_recent_title_duplicate(new_title, filename='titles.txt'):
                 if saved_date > datetime.now() - timedelta(days=7):
                     recent_titles.append((saved_date, saved_title))
 
-    # 최신 제목들을 날짜 기준으로 정렬하고 100개 이하로 자르기
+    # 최신 제목들을 날짜 기준으로 정렬하고 30개 이하로 자르기
     recent_titles.sort(reverse=True, key=lambda x: x[0])  # 최신순으로 정렬
-    recent_titles = [title for _, title in recent_titles[:100]]  # 100개 이하로 자름
+    recent_titles = [title for _, title in recent_titles[:30]]  # 30개 이하로 자름
 
-    # 원시적인 텍스트 유사도 검사 (90% 이상이면 중복으로 간주)
+    # 원시적인 텍스트 유사도 검사 (80% 이상이면 중복으로 간주)
     for title in recent_titles:
-        if calculate_similarity(new_title, title) >= 0.9:
+        if calculate_similarity(new_title, title) >= 0.8:
             return '중복'
 
     # GPT를 사용해 중복 여부 판단
