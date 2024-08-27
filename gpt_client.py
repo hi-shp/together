@@ -12,8 +12,8 @@ def answer_gpt(user_content):
             "role": "system",
             "content": (
         "Categorize the following text into the appropriate category and only state the category.\n"
-        "If the text contains keywords like '서포터즈', '봉사', '취업', etc., categorize it accordingly.\n"
-        "Consider variations in wording and synonyms as matching the relevant category.\n\n"
+        "Consider variations in wording and synonyms as matching the relevant category.\n"
+        "If the text includes the keywords '공모전' or '경진대회', categorize it into the most appropriate [공모전] category.\n"
         "[Competition/Contest] Engineering/Information Technology/Software =([공모전] 공학/IT/SW)\n"
         "[Competition/Contest] Ideas/Planning =([공모전] 아이디어/기획)\n"
         "[Competition/Contest] Art/Design/Architecture =([공모전] 미술/디자인/건축)\n"
@@ -22,12 +22,10 @@ def answer_gpt(user_content):
         "Kind of Education/Lecture/Program or International assignment/Exchange student =(교육/특강/프로그램)\n"
         "Scholarship/Scholar (only those awarded, including work-study students) =(장학금)\n"
         "Supporters/Ambassadors =(서포터즈)\n"
-        "Volunteer Work =(봉사활동)\n"
-        "Employment Information (only company hiring, excluding graduate school, dormitories, etc.) =(취업 정보)\n\n"
-        "If the text, based on its context, is related to '대학원', '진학', '연구 조교', '수강 신청', '수강지도', '등록금', '졸업', '논문' or similar topics, categorize it as 'Not Applicable =(해당없음)'.\n\n"
-        "If the text contains negative keywords such as '취소', '연기', '변경', or indicates that the event has been canceled or postponed, categorize it as 'Not Applicable =(해당없음)'.\n\n"
-        "If the text is too short, unclear, or does not fit into any category, respond with 'Not Applicable =(해당없음)'.\n\n"
-        "If the text could fit into multiple categories, prioritize the most relevant category or the first applicable one.\n\n"
+        "Volunteer Work/Mentoring/Tutoring =(봉사활동)\n"
+        "Employment Information (only company hiring, excluding graduate school, dormitories, etc.) =(취업 정보)\n"
+        "If the text is too short, unclear, or does not fit into any category, respond with 'Not Applicable =(해당없음)'.\n"
+        "If the text could fit into multiple categories, prioritize the most relevant category or the first applicable one.\n"
         "The output must be one of the following: \n"
         "[공모전] 공학/IT/SW,\n"
         "[공모전] 아이디어/기획,\n"
@@ -39,7 +37,7 @@ def answer_gpt(user_content):
         "서포터즈,\n"
         "봉사활동,\n"
         "취업 정보,\n"
-        "or 해당없음.\n\n"
+        "or 해당없음\n\n"
         "Never include any punctuation, quotation marks, or extra text. Only provide the exact category name as the output. The output must be in Korean. Never say anything else."
 )
         },
