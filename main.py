@@ -119,10 +119,6 @@ def main():
                     announcements.append(full_ann)
                     save_title(partial_ann.title)  # 제목 저장
 
-                    # 주기적으로 파일 핸들을 관리하기 위해 파일 닫기
-                    with open('log.txt', 'a') as log_file:
-                        log_file.write(f"Saved announcement: {full_ann.title}\n")
-
                     writenoticeService.write_notices(course_url, [full_ann])  # 공지사항 작성
                     print(f"게시글 작성 완료\n")
                 else:
