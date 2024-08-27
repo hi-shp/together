@@ -50,20 +50,28 @@ def is_recent_title_duplicate(new_title, filename='titles.txt'):
                 if saved_date > datetime.now() - timedelta(days=7):
                     recent_titles.append((saved_date, saved_title))
 
-    # 최신 제목들을 날짜 기준으로 정렬하고 100개 이하로 자르기
+    # 최신 제목들을 날짜 기준으로 정렬하고 1000개 이하로 자르기
     recent_titles.sort(reverse=True, key=lambda x: x[0])  # 최신순으로 정렬
-    recent_titles = [title for _, title in recent_titles[:100]]  # 100개 이하로 자름
+    recent_titles = [title for _, title in recent_titles[:1000]]  # 1000개 이하로 자름
 
     # 각 제목에 대해 특수기호 제거
     cleaned_titles = [remove_brackets(title).strip() for title in recent_titles]
 
-    # 원시적인 텍스트 유사도 검사 (80% 이상이면 중복으로 간주)
-    for title in cleaned_titles:
-        if calculate_similarity(new_title, title) >= 0.8:
-            return '중복'
+    # 원시적인 텍스트 유사도 검사 (가장 유사도가 높은 10개의 제목만 선택)
+    title_similarities = [(calculate_similarity(new_title, title), title) for title in cleaned_titles]
+    title_similarities.sort(reverse=True, key=lambda x: x[0])  # 유사도 순으로 정렬
 
-    # GPT를 사용해 중복 여부 판단
-    return check_title_similarity(new_title, cleaned_titles)
+    highest_similarity = title_similarities[0][0]  # 가장 높은 유사도
+
+    # 유사도가 0.8 이상인 제목이 있으면 '중복' 반환
+    if highest_similarity >= 0.8:
+        print(f"유사도: {highest_similarity:.5f}")
+        return '중복'
+    print(f"유사도: {highest_similarity:.5f}")
+
+    # GPT를 사용해 중복 여부 판단 (가장 유사도가 높은 5개의 제목만 전달)
+    top_5_titles = [title for _, title in title_similarities[:5]]
+    return check_title_similarity(new_title, top_5_titles)
 
 
 def save_title(title, filename='titles.txt'):
