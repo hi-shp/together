@@ -7,6 +7,7 @@ from page_url_manager import PageUrlManager
 import pandas as pd
 import gc
 import os
+from datetime import datetime
 
 # 사전 정의된 키워드와 카테고리 매핑
 KEYWORD_CATEGORIES = {
@@ -21,7 +22,6 @@ KEYWORD_CATEGORIES = {
     "서포터즈": "서포터즈",
     "기자단": "서포터즈",
     "앰배서더": "서포터즈",
-    "취업": "취업 정보",
     "인턴": "취업 정보",
     "일자리": "취업 정보",
     "공개모집": "취업 정보",
@@ -37,7 +37,7 @@ KEYWORD_CATEGORIES = {
 }  # 지속적으로 추가 예정
 
 # 제외할 키워드
-EXCLUDE_KEYWORDS = ["졸업", "대출", "재입학", "진학", "수강 신청", "수강신청", "수강 지도", "수강지도", "수강정정", "취소", "연기", "변경"]  # 추가 예정
+EXCLUDE_KEYWORDS = ["졸업", "대출", "재입학", "진학", "수강 신청", "수강신청", "수강 지도", "수강지도", "수강정정", "취소", "연기", "변경", "휴학", "복학"]  # 추가 예정
 
 def categorize_by_keywords(title, content_text):
     # 제목과 내용에서 키워드를 검색하여 게시판을 직접 분류. 매핑된 카테고리가 있는 경우 해당 카테고리로 분류, 아니면 None 반환
@@ -73,7 +73,9 @@ def update_csv_with_announcement_numbers(updates, filename: str):
     df.to_csv(filename, index=False)
 
 def main():
-    load_dotenv()
+    # 오늘 날짜 가져오기
+    today_date = datetime.now().strftime("%Y-%m-%d")
+
     page_url_manager = PageUrlManager()
     announcements = []
     updates = {}  # 업데이트할 URL과 공지 번호 저장
@@ -99,18 +101,18 @@ def main():
 
                 # 키워드 기반 카테고리 분류 시도
                 category = categorize_announcement(partial_ann.title, partial_ann.content_text)
-                print(f"카테고리 분류 결과: {category} - {partial_ann.title}")
+                print(f"카테고리 분류 결과: {category}")
 
                 if category in [
+                    "교육/특강/프로그램",
                     "[공모전] 공학/IT/SW",
                     "[공모전] 아이디어/기획",
                     "[공모전] 미술/디자인/건축",
                     "[공모전] 문학/수기/에세이",
                     "[공모전] 기타",
-                    "교육/특강/프로그램",
                     "장학금",
-                    "서포터즈",
                     "봉사활동",
+                    "서포터즈",
                     "취업 정보"
                 ]:
                     # 전체 공지사항 크롤링
@@ -129,6 +131,12 @@ def main():
             updates[announcement_page.page_url] = latest_announcement_number
             update_csv_with_announcement_numbers(updates, os.getenv('PAGE_NAME'))
             updates = {}
+
+    # 공지글 체크 해제 및 별 제거 작업 시작 알림
+    print("공지글 수정 작업을 시작합니다.")
+
+    # 오늘 올린 공지가 아닌 모든 게시글의 공지글 체크 해제 및 별 제거
+    writenoticeService.remove_stars_and_uncheck_notices(course_url, today_date)
 
 if __name__ == "__main__":
     main()
