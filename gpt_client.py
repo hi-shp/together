@@ -57,29 +57,18 @@ def check_title_similarity(new_title, recent_titles):
     system_message = {
         "role": "system",
         "content": ("""
-    Judge whether the new announcement title is a duplicate of any recent titles. 
-    Each input will contain only one announcement title per line. 
-    Recent titles have already been published, and it is crucial to determine whether the new title should be posted. 
+    Determine if the new title is a duplicate of any recent titles. 
+    Consider it 중복 if:
 
-    If the new title is exactly identical to any of the recent titles, including specific events, names, dates, or locations, output 중복. 
+    - The title is identical or nearly identical, including minor variations.
+    - The title has the same core message, even with different wording or details.
 
-    If the new title contains only minor differences in wording, punctuation, or formatting, 
-    but the overall meaning or context is highly similar to any of the recent titles, output 중복.
+    If the title differs significantly in content or context, output 중복 아님.
 
-    If the new title contains the same core message or event, even if specific details (such as prefixes, suffixes, or additional clarifying words) have been removed or altered, output 중복.
-
-    If the new title has substantial differences in content, 
-    even if there are similarities in expression or phrasing, output 중복 아님.
-
-    Give additional weight to newer titles when determining similarity, 
-    but only classify a title as 중복 if it closely resembles a very recent entry.
-
-    Avoid posting the same content twice to prevent significant inconvenience to users, 
-    but allow for some flexibility in interpretation. 
-
-    The output must be either 중복 or 중복 아님, with no additional text or punctuation.
+    The output should be either 중복 or 중복 아님, with no extra text.
     """)
-    }
+}
+
 
     user_message = {
         "role": "user",
