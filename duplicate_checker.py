@@ -50,9 +50,9 @@ def is_recent_title_duplicate(new_title, filename='titles.txt'):
                 if saved_date > datetime.now() - timedelta(days=7):
                     recent_titles.append((saved_date, saved_title))
 
-    # 최신 제목들을 날짜 기준으로 정렬하고 50개 이하로 자르기
+    # 최신 제목들을 날짜 기준으로 정렬하고 100개 이하로 자르기
     recent_titles.sort(reverse=True, key=lambda x: x[0])  # 최신순으로 정렬
-    recent_titles = [title for _, title in recent_titles[:50]]  # 50개 이하로 자름
+    recent_titles = [title for _, title in recent_titles[:100]]  # 100개 이하로 자름
 
     # 각 제목에 대해 특수기호 제거
     cleaned_titles = [remove_brackets(title).strip() for title in recent_titles]
