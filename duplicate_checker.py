@@ -57,20 +57,20 @@ def is_recent_title_duplicate(new_title, filename='titles.txt'):
     # 각 제목에 대해 특수기호 제거
     cleaned_titles = [remove_brackets(title).strip() for title in recent_titles]
 
-    # 원시적인 텍스트 유사도 검사 (가장 유사도가 높은 10개의 제목만 선택)
+    # 원시적인 텍스트 유사도 검사
     title_similarities = [(calculate_similarity(new_title, title), title) for title in cleaned_titles]
     title_similarities.sort(reverse=True, key=lambda x: x[0])  # 유사도 순으로 정렬
 
     highest_similarity = title_similarities[0][0]  # 가장 높은 유사도
 
-    # 유사도가 0.8 이상인 제목이 있으면 '중복' 반환
-    if highest_similarity >= 0.8:
+    # 유사도가 0.85 이상인 제목이 있으면 '중복' 반환
+    if highest_similarity >= 0.85:
         print(f"유사도: {highest_similarity:.5f}")
         return '중복'
     print(f"유사도: {highest_similarity:.5f}")
 
-    # GPT를 사용해 중복 여부 판단 (가장 유사도가 높은 5개의 제목만 전달)
-    top_5_titles = [title for _, title in title_similarities[:5]]
+    # GPT를 사용해 중복 여부 판단 (가장 유사도가 높은 3개의 제목만 전달)
+    top_5_titles = [title for _, title in title_similarities[:3]]
     return check_title_similarity(new_title, top_5_titles)
 
 
