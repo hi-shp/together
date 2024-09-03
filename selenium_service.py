@@ -56,7 +56,7 @@ class WriteNoticeService:
             if announcement.notice_board_name != "해당없음":
                 self.move_to_notice_board(announcement.notice_board_name)
                 self.write_notice_in_board(announcement.title, announcement.url, announcement.content_html,
-                                           announcement.files)
+                                           announcement.files, announcement.notice_board_name)
 
                 # 공지 작성 후 코스 페이지로 돌아가기
                 self.move_to_course(course_url)
