@@ -73,4 +73,6 @@
 ### 2. 상세 설계
 
 #### 2.1 시스템 구성도
+![시스템 구성도](https://github.com/user-attachments/assets/498d9166-1985-4568-956f-d35a8cbe2b4d)
+
 
