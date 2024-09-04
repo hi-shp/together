@@ -137,6 +137,7 @@
 ### 3. 개발결과
 
 #### 3.1 전체시스템 흐름도
+![전체시스템 흐름도](https://github.com/user-attachments/assets/66727798-c073-42ed-b677-13d6bd416516)
 
 <br>
 
