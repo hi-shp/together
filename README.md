@@ -1,4 +1,5 @@
-<img alt="image" src="https://github.com/user-attachments/assets/091daec5-b3d0-492f-b842-ca544f4a14b4" style="width: 100%; height: auto; max-width: 100%;"><br>
+<img alt="image" src="https://github.com/user-attachments/assets/a4e6f288-40a4-47f7-b9cc-00c255a5e2b2" style="width: 100%; height: auto; max-width: 100%;"><br>
+
 ### 1. 프로젝트 소개
 
 #### 1.1. 개발배경 및 필요성
