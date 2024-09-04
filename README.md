@@ -189,6 +189,7 @@ Root_Directory/
 
 ### 5. 소개 및 시연영상
 [![YouTube Video](https://img.youtube.com/vi/gLcrgCcawjU/0.jpg)](https://youtu.be/gLcrgCcawjU?si=AZ39LhMV-UCQrccR)
+투게더 시연영상 in Youtube
 
 
 <br><br>
