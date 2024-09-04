@@ -176,11 +176,6 @@ Root_Directory/
    - **멘토링 의견**: PLATO 플랫폼을 활용하는 이점은 있으나, 기술적・관리적・법적 제약으로 인해 서비스 구현 및 사용자 확대에 어려움이 있을 수 있으니 이를 고려할 것을 권장.
    - **반영 사항**: PLATO의 기술적 한계를 분석하고 이를 보완하기 위한 기능을 검토 중입니다. 특히, 공모전 참가자들이 프로필을 작성하고, 원하는 조건에 맞는 팀원을 자동으로 매칭하는 팀 매칭 기능을 구현할 가능성을 살펴보고 있습니다. 참가자의 전공, 기술, 경력, 관심 분야 등을 바탕으로 팀원을 추천하거나 팀을 구성할 수 있는 시스템을 목표로 하고 있습니다.
 
-
-<br>
-
-#### 3.2 기능설명
-
 <br><br>
 
 ### 4. 설치 및 사용 방법
@@ -197,10 +192,24 @@ Root_Directory/
 <br><br>
 
 ### 6. 팀 소개
+| 박순홍 | 정윤성 | 유승언 |
+|:-------:|:-------:|:-------:|
+|<img width="100px" alt="MEMBER1" src="https://github.com/pnuswedu/SW-Hackathon-2024/assets/34933690/f5b5df2a-e174-437d-86b2-a5a23d9ee75d" /> | <img width="100px" alt="MEMBER2" src="https://github.com/pnuswedu/SW-Hackathon-2024/assets/34933690/fe4e8910-4565-4f3f-9bd1-f135e74cb39d" /> | <img width="100px" alt="MEMBER3" src="https://github.com/pnuswedu/SW-Hackathon-2024/assets/34933690/675d8471-19b9-4abc-bf8a-be426989b318" /> |
+| hishp@pusan.ac.kr | jys0972@pusan.ac.kr | ben10123@pusan.ac.kr |
+| 기획 및 총괄 | 모듈 개발 | 디자인 및 홍보 |
 
-<br><br>
+
+<br/>
+
 
 ### 7. 해커톤 참여 후기
+- 박순홍
+  > 작성하세요.
+- 정윤성
+  > 작성하세요.
+- 유승언
+  > 작성하세요.
+<br/>
 
 
 
