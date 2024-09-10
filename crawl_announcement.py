@@ -297,7 +297,7 @@ def crawl_ann(url: str) -> Announcement:  # 전부 추출
             file_tags = board_view.find_all('a', class_='add-file')
             for file_tag in file_tags:
                 file_url = urljoin(base_url, file_tag['href'])  # 상대 URL을 절대 URL로 변환
-                file_name = sanitize_filename(file_tag.get_text(strip=True).split('(')[0].strip())  # 파일명만 추출
+                file_name = sanitize_filename(file_tag.get_text(strip=True).rsplit('(', 1)[0].strip())  # 파일명만 추출
                 if not any(file_name.lower().endswith(ext) for ext in file_extensions_to_exclude):  # 이미지 파일 제외
                     file_path = os.path.join('downloads', file_name)
                     file_data = requests.get(file_url).content
