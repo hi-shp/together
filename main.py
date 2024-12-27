@@ -17,6 +17,7 @@ with open('env.json', 'r', encoding='utf-8') as f:
 KEYWORD_CATEGORIES = config['KEYWORD_CATEGORIES']
 EXCLUDE_KEYWORDS = config['EXCLUDE_KEYWORDS']
 CATEGORIES = config['CATEGORIES']
+
 def categorize_by_keywords(title, content_text):
     # 제목과 내용에서 키워드를 검색하여 게시판을 직접 분류. 매핑된 카테고리가 있는 경우 해당 카테고리로 분류, 아니면 None 반환
     for keyword, category in KEYWORD_CATEGORIES.items():
@@ -113,13 +114,7 @@ def main_specific(url, course_url):
     # 제목+내용만 부분적으로 크롤링
     partial_ann = crawl_ann_partial(url)
     if partial_ann:
-        # 제목 중복 체크
-        duplicate_check = is_recent_title_duplicate(partial_ann.title)
-        print(f"중복 체크 결과: {duplicate_check} - {partial_ann.title}")
-        if duplicate_check == "중복":
-            print("")
-            return
-
+        print(f"제목: {partial_ann.title}")
         # 키워드 기반 카테고리 분류 시도
         category = categorize_announcement(partial_ann.title, partial_ann.content_text)
         print(f"카테고리 분류 결과: {category}")
@@ -147,4 +142,3 @@ if __name__ == "__main__":
         main_specific(url, course_url)
     else:
         main()
-
