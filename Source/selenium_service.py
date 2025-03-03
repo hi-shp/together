@@ -257,6 +257,8 @@ class WriteNoticeService:
                         <p><strong>제목: {title}</strong></p>
                         <p><a href="{url}">{url}</a></p>
                         <br>
+                        <br>
+                        <br>
                     </div>
                 </div>
             </body>
@@ -269,16 +271,17 @@ class WriteNoticeService:
             # 공지사항 URL 태그 찾기
             url_tag = soup.find('a', href=True)
 
+            # 공지사항 URL 태그 찾기
+            url_tag = soup.find('a', href=True)
+
             if url_tag:
                 # 받은 content HTML을 BeautifulSoup 객체로 변환
-                content_soup = BeautifulSoup(content, 'html.parser')
+                content_soup = BeautifulSoup(
+                    f'<blockquote style="margin-left: 20px; border-left: 4px solid #ccc; padding-left: 10px;">{content}</blockquote>',
+                    'html.parser')
 
-                # <br> 태그 생성
-                br_tag = content_soup.new_tag('br')
-
-                # 먼저 content를 삽입하고, 그 앞에 <br> 태그 추가
+                # URL 태그 뒤에 삽입
                 url_tag.insert_after(content_soup)
-                url_tag.insert_after(br_tag)
 
             # 이미지 파일을 Base64로 변환 (이메일에서 표시되도록)
             with open(r"C:\together-main\Source\together.png", "rb") as img_file:
