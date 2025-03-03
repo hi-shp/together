@@ -57,6 +57,12 @@ class WriteNoticeService:
 
     def download_survey(self):
         self.driver.get("https://plato.pusan.ac.kr/mod/feedback/view.php?id=2007210")
+        # 응답 개수 크롤링
+        response_count_element = WebDriverWait(self.driver, 10).until(
+            EC.presence_of_element_located((By.CLASS_NAME, "feedback_info_value"))
+        )
+        response_count = response_count_element.text
+
         # 응답 보기 버튼 클릭
         response_view_button = WebDriverWait(self.driver, 10).until(
             EC.presence_of_element_located((By.LINK_TEXT, "응답 보기"))
@@ -85,6 +91,8 @@ class WriteNoticeService:
             df_email = df[['이름', '(선택/복수 가능) 학과', '(선택/복수 가능) 알림 설정', '이메일 주소']].copy()  # 필요한 컬럼 추출
             df_email['Email 여부'] = df_email['(선택/복수 가능) 알림 설정'].apply(lambda x: '이메일' in str(x))  # '이메일' 포함 여부 확인
             df_email.to_csv(r"C:\Users\Park\Downloads\email.csv", index=False, encoding="utf-8-sig")  # 결과 저장
+
+        return response_count
 
     def send_message(self, title, url, department):
         # 쪽지 보내기 버튼 클릭 → 학번/이름 기반 체크박스 클릭 → 쪽지 작성 및 전송
@@ -621,3 +629,5 @@ class WriteNoticeService:
                 EC.element_to_be_clickable((By.NAME, "submitbutton"))
             )
             save_button.click()
+
+        return highest_number

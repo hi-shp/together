@@ -63,10 +63,10 @@ def main():
     updates = {}  # 업데이트할 URL과 공지 번호 저장
     writenoticeService = WriteNoticeService()
     course_url = "https://plato.pusan.ac.kr/course/view.php?id=157301"  # 실제 course_url 사용
-    writenoticeService.update_participants()
-    print("참여자 업데이트 완료")
-    writenoticeService.download_survey()
-    print("설문 다운로드 완료")
+    highest_num = writenoticeService.update_participants()
+    print(f"참여자 업데이트 완료 ({highest_num}명)")
+    response_count = writenoticeService.download_survey()
+    print(f"설문 다운로드 완료 ({response_count}명)")
 
     for announcement_page in page_url_manager.announcement_pages:
         ann_urls, latest_announcement_number = get_anns_url(announcement_page)  # 각 페이지에서 공지사항 URL 가져오기
