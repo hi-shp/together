@@ -1,65 +1,91 @@
-import openai
 import os
+from openai import OpenAI
+from dotenv import load_dotenv
+
+load_dotenv()
+api_key = os.getenv("GPT_API_KEY")
+
+# OpenAI 클라이언트 설정
+client = OpenAI(
+    api_key=api_key,
+)
 
 def answer_gpt(user_content):
-    openai.api_key = os.environ.get('GPT_API_KEY')
-
     messages = [
-        {"role": "system", "content": (
-            "다음 글을 적절한 카테고리로 분류해서 그 카테고리만 말해. 만약 내용에 대회나 공모전이 있다면 무조건 공모전 중 하나로 분류해.\n\n"
-            "[공모전] 공학/IT/SW\n"
-            "[공모전] 아이디어/기획\n"
-            "[공모전] 미술/디자인/건축\n"
-            "[공모전] 사진/영상/UCC\n"
-            "[공모전] 문학/수기/에세이\n"
-            "[공모전] 기타\n"
-            "교육/특강/프로그램\n"
-            "장학금\n"
-            "서포터즈\n"
-            "봉사활동\n"
-            "취업 정보\n"
-            "그 외 해당되지 않는다면 '해당없음'으로 응답해줘. \n\n"
-            "장학금, 서포터즈, 봉사, 취업 등 위 게시판의 키워드들과 하나라도 겹치면 그걸로 판단해.\n"
-            "다른 추가적인 내용은 절대 붙이지 말고 분류한 카테고리 혹은 '해당없음'으로만 출력해.\n"
-        )},
+        {
+            "role": "system",
+            "content": (
+        "Categorize the following text into the appropriate category and only state the category.\n"
+        "Consider variations in wording and synonyms as matching the relevant category.\n"
+        "If the text includes the keywords '공모전' or '경진대회', categorize it into the most appropriate [공모전] category.\n"
+        "[Competition/Contest] Engineering/Information Technology/Software =([공모전] 공학/IT/SW)\n"
+        "[Competition/Contest] Ideas/Planning =([공모전] 아이디어/기획)\n"
+        "[Competition/Contest] Art/Design/Architecture =([공모전] 미술/디자인/건축)\n"
+        "[Competition/Contest] Literature/Personal Narrative/Essay =([공모전] 문학/수기/에세이)\n"
+        "[Competition/Contest] Miscellaneous (for contests not clearly falling into other categories or if uncertain) =([공모전] 기타)\n"
+        "Kind of Education/Lecture/Program or International assignment/Exchange student including Survey Participation Invitation =(교육/특강/프로그램)\n"
+        "Scholarship/Scholar (only those awarded, including work-study students) =(장학금)\n"
+        "Supporters/Ambassadors =(서포터즈)\n"
+        "Volunteer Work/Mentoring/Tutoring =(봉사활동)\n"
+        "Employment Information/Job Fair/Recruitment Fair (only company hiring, excluding graduate school, dormitories, etc.) =(취업 정보)\n"
+        "If the text is too short, unclear, or does not fit into any category, respond with 해당없음.\n"
+        "If the text could fit into multiple categories, prioritize the most relevant category or the first applicable one.\n"
+        "The output must be one of the following: \n"
+        "[공모전] 공학/IT/SW,\n"
+        "[공모전] 아이디어/기획,\n"
+        "[공모전] 미술/디자인/건축,\n"
+        "[공모전] 문학/수기/에세이,\n"
+        "[공모전] 기타,\n"
+        "교육/특강/프로그램,\n"
+        "장학금,\n"
+        "서포터즈,\n"
+        "봉사활동,\n"
+        "취업 정보,\n"
+        "해당없음\n\n"
+        "Never include any punctuation, quotation marks, or extra text. Only provide the exact category name as the output. The output must be in Korean. Never say anything else."
+)
+        },
         {"role": "user", "content": user_content}
     ]
 
-    response = openai.ChatCompletion.create(
+    response = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=messages
     )
 
-    assistant_content = response['choices'][0]['message']['content'].strip()
+    assistant_content = response.choices[0].message.content
 
     return assistant_content
 
 def check_title_similarity(new_title, recent_titles):
-    openai.api_key = os.environ.get('GPT_API_KEY')
-
-    # 시스템 메시지 정의
     system_message = {
         "role": "system",
-        "content": (
-            "다음 새로운 제목과 최근 제목들 중에 중복된 제목이 있는지 판단해줘. 똑같으면 '중복'을, 똑같지 않으면 '중복 아님'을 출력해."
-        )
-    }
+        "content": ("""
+    Determine if the new title is a duplicate of any recent titles. 
+    Consider it 중복 if:
 
-    # 사용자 메시지 정의
+    - The title is identical or nearly identical, including minor variations.
+    - The title has the same core message, even with different wording or details.
+
+    If the title differs significantly in content or context, output 중복 아님.
+
+    The output should be either 중복 or 중복 아님, with no extra text.
+    """)
+}
+
+
     user_message = {
         "role": "user",
-        "content": f"새로운 제목: {new_title}\n최근 제목들: " + "\n".join(recent_titles)
+        "content": f"최근 제목들: " + "\n".join(recent_titles) + f"\n새로운 제목: {new_title}"
     }
 
     messages = [system_message, user_message]
 
-    response = openai.ChatCompletion.create(
+    response = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=messages
     )
 
-    assistant_content = response['choices'][0]['message']['content'].strip()
-
-    print(f"GPT 응답: {assistant_content}")  # 응답 로그 출력
+    assistant_content = response.choices[0].message.content
 
     return assistant_content
