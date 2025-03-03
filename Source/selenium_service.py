@@ -630,4 +630,4 @@ class WriteNoticeService:
             )
             save_button.click()
 
-        return highest_number
+        return formatted_number
